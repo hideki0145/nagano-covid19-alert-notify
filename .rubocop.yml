@@ -169,6 +169,9 @@ Metrics/ParameterLists:
 Naming/InclusiveLanguage: # (new in 1.18)
   Enabled: true
 
+Naming/MethodParameterName:
+  AllowedNames: [td]
+
 Style/AccessorGrouping:
   Enabled: true
 
