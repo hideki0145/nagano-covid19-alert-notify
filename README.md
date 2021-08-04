@@ -19,6 +19,8 @@
 bin/run
 # RuboCopによる静的解析を実行する
 bundle exec rubocop
+# Wheneverによるcrontabファイル書込を実行する
+bundle exec whenever --update-crontab
 # 最新でないgemのリストを表示する
 bundle outdated
 ```

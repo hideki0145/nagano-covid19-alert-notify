@@ -5,6 +5,7 @@ ruby '2.7.4'
 
 gem 'open-uri'
 gem 'nokogiri'
+gem 'whenever', require: false
 
 group :development do
   gem 'rubocop', require: false
