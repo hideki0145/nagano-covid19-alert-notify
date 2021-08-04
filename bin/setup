@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+FileUtils.cp 'config/config.yml.sample', 'config/config.yml' unless File.exist?('config/config.yml')
