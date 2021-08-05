@@ -35,12 +35,18 @@ module NaganoCovid19AlertNotify
     end
 
     def create_text_to_notify
+      system_data = load_system_data
       data = parse_url
-      I18n.t(
-        'text_to_notify', area: CONFIG[:area], level: data[:level], population: data[:population],
-                          positives: data[:positives], increase_and_decrease: data[:increase_and_decrease],
-                          positives_per_population: data[:positives_per_population], updated_date: data[:updated_date]
-      )
+      if system_data == data
+        nil
+      else
+        save_system_data(data)
+        I18n.t(
+          'text_to_notify', area: CONFIG[:area], level: data[:level], population: data[:population],
+                            positives: data[:positives], increase_and_decrease: data[:increase_and_decrease],
+                            positives_per_population: data[:positives_per_population], updated_date: data[:updated_date]
+        )
+      end
     end
 
     def parse_url
@@ -67,6 +73,16 @@ module NaganoCovid19AlertNotify
       result[:positives] = td[2].text
       result[:increase_and_decrease] = td[3].text
       result[:positives_per_population] = td[4].text
+    end
+
+    SYSTEM_DATA_PATH = './config/system_data.yml'.freeze
+    def load_system_data
+      File.open(SYSTEM_DATA_PATH, 'w') unless File.exist?(SYSTEM_DATA_PATH)
+      File.open(SYSTEM_DATA_PATH, 'r') { |f| YAML.safe_load(f) }&.transform_keys(&:to_sym)
+    end
+
+    def save_system_data(data)
+      YAML.dump(data.transform_keys(&:to_s), File.open(SYSTEM_DATA_PATH, 'w'))
     end
   end
 end
