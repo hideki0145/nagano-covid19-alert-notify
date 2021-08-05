@@ -1,9 +1,12 @@
 require 'yaml'
+require 'i18n'
 require 'open-uri'
 require 'nokogiri'
 
 module NaganoCovid19AlertNotify
   CONFIG = YAML.load_file('./config/config.yml').transform_keys(&:to_sym).freeze
+  I18n.load_path << Dir["#{File.expand_path('./config/locales')}/*.yml"]
+  I18n.default_locale = CONFIG[:locale].to_sym
 
   class << self
     def run
@@ -33,15 +36,11 @@ module NaganoCovid19AlertNotify
 
     def create_text_to_notify
       data = parse_url
-      <<~TEXT
-        #{CONFIG[:area]}圏域の新型コロナウイルス感染警戒レベルは#{data[:level]}です。
-        感染警戒レベル：#{data[:level]}
-        圏域人口　　　：#{data[:population]}
-        件数　　　　　：#{data[:positives]}
-        増減　　　　　：#{data[:increase_and_decrease]}
-        人口10万人当たりの新規陽性者数：#{data[:positives_per_population]}
-        (#{data[:updated_date]})
-      TEXT
+      I18n.t(
+        'text_to_notify', area: CONFIG[:area], level: data[:level], population: data[:population],
+                          positives: data[:positives], increase_and_decrease: data[:increase_and_decrease],
+                          positives_per_population: data[:positives_per_population], updated_date: data[:updated_date]
+      )
     end
 
     def parse_url

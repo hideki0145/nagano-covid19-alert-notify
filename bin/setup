@@ -2,3 +2,4 @@
 require 'fileutils'
 
 FileUtils.cp 'config/config.yml.sample', 'config/config.yml' unless File.exist?('config/config.yml')
+FileUtils.cp 'config/locales/ja.yml.sample', 'config/locales/ja.yml' unless File.exist?('config/locales/ja.yml')

@@ -3,9 +3,12 @@ GEM
   specs:
     ast (2.4.2)
     chronic (0.10.2)
+    concurrent-ruby (1.1.9)
     debase (0.2.4.1)
       debase-ruby_core_source (>= 0.10.2)
     debase-ruby_core_source (0.10.12)
+    i18n (1.8.10)
+      concurrent-ruby (~> 1.0)
     nokogiri (1.12.1-x86_64-linux)
       racc (~> 1.4)
     open-uri (0.1.0)
@@ -43,6 +46,7 @@ PLATFORMS
 
 DEPENDENCIES
   debase
+  i18n
   nokogiri
   open-uri
   rubocop

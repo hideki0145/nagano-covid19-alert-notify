@@ -10,7 +10,7 @@
 ## 環境構築
 
 1. 動作環境を満たした上で `bin/setup` を実行してください。
-2. `config/config.yml` の内容を環境に合わせて適宜調整してください。
+2. `config/config.yml` と `config/locales/ja.yml` の内容を環境に合わせて適宜調整してください。
 
 ## 開発コマンド一覧
 
