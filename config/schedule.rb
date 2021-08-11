@@ -20,7 +20,7 @@
 # Learn more: http://github.com/javan/whenever
 job_type :command, 'cd :path && :task'
 
-work_hour = [8, 17].map { |h| "#{h}:00" }
-every :weekday, at: work_hour do
+work_hour = [17].map { |h| "#{h}:00" }
+every 1.day, at: work_hour do
   command 'bin/run'
 end
