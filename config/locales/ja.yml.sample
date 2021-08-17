@@ -1,6 +1,7 @@
 ja:
   text_to_notify: |
     %{area}圏域の新型コロナウイルス感染警戒レベルは%{level}です。
+    圏域　　　　　：%{area}
     感染警戒レベル：%{level}
     圏域人口　　　：%{population}
     件数　　　　　：%{positives}

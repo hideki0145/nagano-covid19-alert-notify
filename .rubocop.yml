@@ -170,7 +170,7 @@ Naming/InclusiveLanguage: # (new in 1.18)
   Enabled: true
 
 Naming/MethodParameterName:
-  AllowedNames: [tr, td]
+  AllowedNames: [tr, th, td]
 
 Style/AccessorGrouping:
   Enabled: true

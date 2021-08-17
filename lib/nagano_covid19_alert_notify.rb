@@ -42,7 +42,7 @@ module NaganoCovid19AlertNotify
       else
         save_system_data(data)
         I18n.t(
-          'text_to_notify', area: CONFIG[:area], level: data[:level], population: data[:population],
+          'text_to_notify', area: data[:area], level: data[:level], population: data[:population],
                             positives: data[:positives], increase_and_decrease: data[:increase_and_decrease],
                             positives_per_population: data[:positives_per_population], updated_date: data[:updated_date]
         )
@@ -54,8 +54,9 @@ module NaganoCovid19AlertNotify
       doc.css(CONFIG[:table_row_selector]).each_with_object({}) do |tr, result|
         next if other_area?(tr)
 
+        th = tr.css(CONFIG[:table_header_cell_selector])
         td = tr.css(CONFIG[:table_data_cell_selector])
-        set_result(result, td)
+        set_result(result, th, td)
       end.merge({ updated_date: doc.css(CONFIG[:updated_date_selector]).text })
     end
 
@@ -70,7 +71,7 @@ module NaganoCovid19AlertNotify
     end
 
     def other_area?(tr)
-      tr.css(CONFIG[:table_header_cell_selector]).text.strip != CONFIG[:area]
+      tr.css(CONFIG[:table_area_cell_selector]).text.strip != CONFIG[:area]
     end
 
     def data_equal?(data1, data2)
@@ -79,12 +80,17 @@ module NaganoCovid19AlertNotify
       data1 == data2
     end
 
-    def set_result(result, td)
+    def set_result(result, th, td)
+      result[:area] = area(th)
       result[:level] = level(td)
       result[:population] = population(td)
       result[:positives] = positives(td)
       result[:increase_and_decrease] = increase_and_decrease(td)
       result[:positives_per_population] = positives_per_population(td)
+    end
+
+    def area(th)
+      th.text.strip.gsub(/\R/, '').gsub(/\s/, '')
     end
 
     def level(td)

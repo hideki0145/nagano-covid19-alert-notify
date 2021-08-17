@@ -3,7 +3,8 @@ url: https://www.pref.nagano.lg.jp/kansensho-taisaku/kenko/kenko/kansensho/joho/
 area: 長野
 updated_date_selector: p#tmp_update
 table_row_selector: table.datatable tbody tr
-table_header_cell_selector: th a
+table_area_cell_selector: th a
+table_header_cell_selector: th
 table_data_cell_selector: td
 slack_token:
 slack_channel:
