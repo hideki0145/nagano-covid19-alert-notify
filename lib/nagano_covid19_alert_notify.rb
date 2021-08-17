@@ -37,7 +37,7 @@ module NaganoCovid19AlertNotify
     def create_text_to_notify
       system_data = load_system_data
       data = parse_url
-      if system_data == data
+      if data_equal?(system_data, data)
         nil
       else
         save_system_data(data)
@@ -50,7 +50,7 @@ module NaganoCovid19AlertNotify
     end
 
     def parse_url
-      doc = Nokogiri::HTML(URI.parse(CONFIG[:url]).open)
+      doc = Nokogiri::HTML(open_html)
       doc.css(CONFIG[:table_row_selector]).each_with_object({}) do |tr, result|
         next if other_area?(tr)
 
@@ -59,20 +59,52 @@ module NaganoCovid19AlertNotify
       end.merge({ updated_date: doc.css(CONFIG[:updated_date_selector]).text })
     end
 
+    def open_html
+      return File.new('./config/test.html') if CONFIG[:test]
+
+      URI.parse(CONFIG[:url]).open
+    end
+
     def use_slack_notification?(text_to_notify)
       !CONFIG[:slack_token].nil? && !CONFIG[:slack_channel].nil? && !text_to_notify.nil?
     end
 
     def other_area?(tr)
-      tr.css(CONFIG[:table_header_cell_selector]).text != CONFIG[:area]
+      tr.css(CONFIG[:table_header_cell_selector]).text.strip != CONFIG[:area]
+    end
+
+    def data_equal?(data1, data2)
+      return false if CONFIG[:test]
+
+      data1 == data2
     end
 
     def set_result(result, td)
-      result[:level] = td[0].text
-      result[:population] = td[1].text
-      result[:positives] = td[2].text
-      result[:increase_and_decrease] = td[3].text
-      result[:positives_per_population] = td[4].text
+      result[:level] = level(td)
+      result[:population] = population(td)
+      result[:positives] = positives(td)
+      result[:increase_and_decrease] = increase_and_decrease(td)
+      result[:positives_per_population] = positives_per_population(td)
+    end
+
+    def level(td)
+      td[0].text.strip.gsub(/\R/, '').gsub(/\s/, '')
+    end
+
+    def population(td)
+      td[1].text
+    end
+
+    def positives(td)
+      td[2].text
+    end
+
+    def increase_and_decrease(td)
+      td[3].text
+    end
+
+    def positives_per_population(td)
+      td[4].text
     end
 
     SYSTEM_DATA_PATH = './config/system_data.yml'.freeze
