@@ -98,19 +98,19 @@ module NaganoCovid19AlertNotify
     end
 
     def population(td)
-      td[1].text
+      td[1].text.strip.gsub(/\R/, '')
     end
 
     def positives(td)
-      td[2].text
+      td[2].text.strip.gsub(/\R/, '')
     end
 
     def increase_and_decrease(td)
-      td[3].text
+      td[3].text.strip.gsub(/\R/, '')
     end
 
     def positives_per_population(td)
-      td[4].text
+      td[4].text.strip.gsub(/\R/, '')
     end
 
     SYSTEM_DATA_PATH = './config/system_data.yml'.freeze
